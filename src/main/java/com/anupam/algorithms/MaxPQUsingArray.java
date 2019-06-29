@@ -1,10 +1,6 @@
 package com.anupam.algorithms;
 
-import java.beans.IndexedPropertyDescriptor;
-import java.lang.reflect.Array;
 import java.util.Date;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 public class MaxPQUsingArray<T extends Comparable<T>> {
 

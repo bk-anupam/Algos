@@ -5,18 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
 
+import com.anupam.graphs.BreadthFirstSearch;
+import com.anupam.graphs.DepthFirstSearch2;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.anupam.graphs.BreadthFirstSearch;
-import com.anupam.graphs.DepthFirstSearch2;
 import com.anupam.graphs.Graph;
 import com.anupam.graphs.UndirectedGraph;
 
@@ -53,7 +51,7 @@ public class BFSTests {
 	public void dfs2Test(){
 		try{
 			Graph graph = new UndirectedGraph(in);
-			DepthFirstSearch2 bfs = new DepthFirstSearch2(graph, 0);		
+			DepthFirstSearch2 bfs = new DepthFirstSearch2(graph, 0);
 			List<Integer> pathToFour = (List<Integer>) bfs.pathTo(4);
 			Assert.assertEquals(3, pathToFour.size());
 		}catch(Exception e){

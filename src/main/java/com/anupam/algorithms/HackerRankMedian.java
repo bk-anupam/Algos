@@ -58,8 +58,8 @@ public class HackerRankMedian {
 		double median = 0.0;
 		if((minHeap.size() + maxHeap.size()) % 2 == 0 || (minHeap.size() + maxHeap.size() == 1)){
 			Double item1 = (minHeap.peek() == null) ? 0.0 : minHeap.peek().doubleValue();
-			Double item2 = (maxHeap.peek() == null) ? 0.0 : maxHeap.peek();
-			median = (item1 + item2) / 2.0; 
+			//Double item2 = (maxHeap.peek() == null) ? 0.0 : maxHeap.peek();
+			//median = (item1 + item2) / 2.0;
 		}else if(minHeap.size() > maxHeap.size()){
 			median = (minHeap.peek() == null) ? 0.0 : minHeap.peek();			
 		}else if(maxHeap.size() > minHeap.size()){
