@@ -45,6 +45,6 @@ public class UndirectedGraph extends Graph{
 	@Override
 	public List<Integer> getInNeighbours(int vertex) {
 		return getNeighbours(vertex);
-	}				
-	
+	}
+
 }

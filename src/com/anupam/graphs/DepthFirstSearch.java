@@ -2,24 +2,34 @@ package com.anupam.graphs;
 
 import java.util.Stack;
 
-public class DepthFirstSearch {
+public class DepthFirstSearch implements IGraphSearch{
 	boolean[] visited;
 	int[] edgeTo;
 	private int count = 0;
 	private int sourceVertex;
+	private boolean hasCycle;
 	
 	public DepthFirstSearch(Graph graph, int pSourceVertex){
+		visited = new boolean[graph.numVertex];
+		edgeTo = new int[graph.numVertex];
 		sourceVertex = pSourceVertex;
-		search(graph, sourceVertex);
+		search(graph, sourceVertex, sourceVertex);
 	}
-	
+
+	@Override
 	public void search(Graph graph, int sourceVertex){
-		visited[sourceVertex] = true;
+		search(graph, sourceVertex, sourceVertex);
+	}
+
+	public void search(Graph graph, int vertex, int parent){
+		visited[vertex] = true;
 		count++;		
-		for (int vertex: graph.getNeighbours(sourceVertex)){
-			if(!visited[vertex]){
-				edgeTo[vertex] = sourceVertex;
-				search(graph, vertex);
+		for (int child: graph.getNeighbours(vertex)){
+			if(!visited[child]){
+				edgeTo[child] = vertex;
+				search(graph, child, vertex);
+			}else if(vertex != parent){
+				hasCycle = true;
 			}
 		}
 	}
@@ -43,5 +53,14 @@ public class DepthFirstSearch {
 		path.push(sourceVertex);
 		return path;
 	}
-	
+
+	public boolean hasPathTo(int vertex){
+		return visited[vertex];
+	}
+
+	@Override
+	public boolean hasCycle() {
+		return hasCycle;
+
+	}
 }

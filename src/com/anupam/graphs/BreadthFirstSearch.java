@@ -61,6 +61,11 @@ public class BreadthFirstSearch implements IGraphSearch{
 	}
 
 	@Override
+	public boolean hasCycle() {
+		return false;
+	}
+
+	@Override
 	public void search(Graph G, int sourceVertex) {
 		edgeTo = new int[G.numVertex];
 		distTo = new int[G.numVertex];

@@ -125,4 +125,5 @@ public abstract class Graph {
 	public int inDegree(int vertex){
 		return getInNeighbours(vertex).size();
 	}
+
 }
