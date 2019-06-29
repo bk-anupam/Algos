@@ -5,4 +5,5 @@ public interface IGraphSearch {
 	boolean hasPathTo(int vertex);
 	Iterable<Integer> pathTo(int vertex);
 	boolean hasCycle();
+	boolean isBipartite();
 }

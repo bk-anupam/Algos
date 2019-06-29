@@ -11,7 +11,11 @@ public class BreadthFirstSearch implements IGraphSearch{
 	private int[] edgeTo = null;
 	// No of edges in the shortest path between a source vertex and a given vertex
 	private int[] distTo = null;
+	private boolean[] color = null;
+
 	Queue<Integer> queue = new LinkedList<Integer>();
+	private boolean hasCycle;
+	private boolean isBipartite = true;
 	
 	public BreadthFirstSearch(Graph G, Iterable<Integer> sources){
 		edgeTo = new int[G.getNumVertex()];
@@ -62,14 +66,22 @@ public class BreadthFirstSearch implements IGraphSearch{
 
 	@Override
 	public boolean hasCycle() {
-		return false;
+		return hasCycle;
 	}
 
 	@Override
-	public void search(Graph G, int sourceVertex) {
+	public boolean isBipartite(){ return isBipartite; }
+
+	public void search(Graph G, int sourceVertex){
+		search(G, sourceVertex, sourceVertex);
+	}
+
+	private void search(Graph G, int sourceVertex, int parent) {
 		edgeTo = new int[G.numVertex];
 		distTo = new int[G.numVertex];
 		visited = new boolean[G.numVertex];
+		color = new boolean[G.numVertex];
+
 		visited[sourceVertex] = true;
 		queue.add(sourceVertex);
 		distTo[sourceVertex] = 0;
@@ -82,6 +94,12 @@ public class BreadthFirstSearch implements IGraphSearch{
 					queue.offer(neighbour);
 					edgeTo[neighbour] = current;
 					distTo[neighbour] = distTo[current] + 1;
+					color[neighbour] = !color[current];
+				}else {
+					if(edgeTo[neighbour] != current)
+						hasCycle = true;
+					if(color[neighbour] == color[current])
+						isBipartite = false;
 				}
 			}
 		}	
