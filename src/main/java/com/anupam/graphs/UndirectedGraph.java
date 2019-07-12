@@ -1,12 +1,18 @@
 package com.anupam.graphs;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.io.InputStreamReader;
+import java.util.*;
 
 // Implementation for undirected graph
 public class UndirectedGraph extends Graph{	
-		
+
+	private List<Integer> vertexList;
+
 	public UndirectedGraph(InputStream in) throws IOException{
 		super(in);
 	}
@@ -32,4 +38,53 @@ public class UndirectedGraph extends Graph{
 		return getNeighbours(vertex);
 	}
 
+	@Override
+	public int getNumVertex(){
+		if(numVertex == 0)
+			numVertex = adjList.keySet().size();
+
+		return numVertex;
+	}
+
+	@Override
+	public List<Integer> getVertexes(){
+		if(vertexList == null)
+			vertexList = new ArrayList<>(adjList.keySet());
+
+		return vertexList;
+	}
+
+	@Override
+	public Map<Integer, List<Integer>> parseGraphDataFile(InputStream in) throws IOException{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		//BufferedReader reader = new BufferedReader(new FileReader(file));
+		Map<Integer, List<Integer>> graph = new HashMap<Integer, List<Integer>>();
+		String str;
+
+		String[] strArray = reader.readLine().split(" ");
+		for(int i = 0; i < strArray.length; i++){
+			if( i == 0 && StringUtils.isNumeric(strArray[i]))
+				numVertex = Integer.parseInt(strArray[i]);
+			else if( i > 0 && StringUtils.isNumeric(strArray[i]))
+				numEdges = Integer.parseInt(strArray[i]);
+		}
+
+		while((str = reader.readLine()) != null){
+			StringTokenizer token = new StringTokenizer(str);
+			String vertex;
+			if(StringUtils.contains(vertex = token.nextToken(), ":"))
+				vertex = StringUtils.substringBefore(vertex, ":");
+
+			String nextToken;
+			List<Integer> edgeList = new ArrayList<Integer>();
+			while(token.hasMoreTokens()){
+				if(StringUtils.isNumeric(nextToken = token.nextElement().toString())){
+					edgeList.add(Integer.parseInt(nextToken));
+				}
+
+			}
+			graph.put(Integer.parseInt(vertex), edgeList);
+		}
+		return graph;
+	}
 }

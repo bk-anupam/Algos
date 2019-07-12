@@ -57,51 +57,15 @@ public abstract class Graph {
 		}
 	}
 	
-	private Map<Integer, List<Integer>> parseGraphDataFile(InputStream in) throws IOException{
+	public abstract Map<Integer, List<Integer>> parseGraphDataFile(InputStream in) throws IOException;
 		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));	
-		//BufferedReader reader = new BufferedReader(new FileReader(file));
-		Map<Integer, List<Integer>> graph = new HashMap<Integer, List<Integer>>();
-		String str;		
-		
-		String[] strArray = reader.readLine().split(" ");
-		for(int i = 0; i < strArray.length; i++){
-			if( i == 0 && StringUtils.isNumeric(strArray[i]))
-				numVertex = Integer.parseInt(strArray[i]);
-			else if( i > 0 && StringUtils.isNumeric(strArray[i]))
-				numEdges = Integer.parseInt(strArray[i]);
-		}
-		
-		while((str = reader.readLine()) != null){
-			StringTokenizer token = new StringTokenizer(str);
-			String vertex;
-			if(StringUtils.contains(vertex = token.nextToken(), ":"))
-				vertex = StringUtils.substringBefore(vertex, ":");
-			
-			String nextToken;
-			List<Integer> edgeList = new ArrayList<Integer>();
-			while(token.hasMoreTokens()){
-				if(StringUtils.isNumeric(nextToken = token.nextElement().toString())){
-					edgeList.add(Integer.parseInt(nextToken));
-				}
-						
-			}
-			graph.put(Integer.parseInt(vertex), edgeList);
-		}		
-		return graph;
-	}
-		
-	public int getNumVertex(){
-		return adjList.keySet().size();
-	}
+	public abstract int getNumVertex();
 	
 	public int getNumEdges(){
 		return numEdges;
 	}
 		
-	public List<Integer> getVertexes(){
-		return new ArrayList<Integer>(adjList.keySet());
-	}
+	public abstract List<Integer> getVertexes();
 	
 	public abstract void addEdge(int v, int w);
 	
