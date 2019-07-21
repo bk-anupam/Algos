@@ -24,8 +24,8 @@ public class GraphClient {
 
     private static void runDirectedGraphRoutines(DiGraph diGraph){
         runTopologicalSort(diGraph);
-
-
+        System.out.println("####################################");
+        getSCCs(diGraph);
     }
 
     private static void runTopologicalSort(DiGraph diGraph) {
@@ -34,6 +34,11 @@ public class GraphClient {
         for(Map.Entry entry: topologicalOrder.entrySet()){
             System.out.println(String.format("vertex: %s, topological order: %s", entry.getValue(), entry.getKey()));
         }
+    }
+
+    private static void getSCCs(DiGraph diGraph){
+        SCC scc = new SCC(diGraph);
+        scc.printVertexComponentId();
     }
 
     private static Graph loadGraphFromFile(String inputFileName, boolean isDirected) throws IOException{
