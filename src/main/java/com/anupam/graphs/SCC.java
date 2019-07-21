@@ -76,6 +76,8 @@ public class SCC implements IConnectedComponents{
         }
 
         private List<Integer> getSccVertexOrdering(){
+            // Run a dfs on reverse graph to get the order on vertexes and it is in this order that
+            // we will run the second dfs
             for(int vertex: diGraph.getVertexes()){
                 if(!visitedMap.containsKey(vertex))
                     reverseDfs(diGraph, vertex);
