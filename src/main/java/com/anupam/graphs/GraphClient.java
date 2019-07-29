@@ -1,25 +1,39 @@
 package com.anupam.graphs;
 
+import com.anupam.graphs.MST.PrimMST;
+import com.anupam.graphs.weighted.EdgeWeightedGraph;
+import com.anupam.graphs.weighted.UndirectedEWG;
+import com.anupam.graphs.weighted.WeightedEdge;
+
 import java.io.*;
 import java.util.Map;
 
 public class GraphClient {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         String inputFileName = args[0];
         boolean isDirected = false;
-        if(!inputFileName.equalsIgnoreCase("tinyG") && !inputFileName.equalsIgnoreCase("tinyDG") && !inputFileName.equalsIgnoreCase("tinyDAG"))
+        boolean isWeighted = false;
+        if(!inputFileName.equalsIgnoreCase("tinyG") && !inputFileName.equalsIgnoreCase("tinyDG")
+                && !inputFileName.equalsIgnoreCase("tinyDAG") && !inputFileName.equalsIgnoreCase("tinyEWG"))
             throw new IOException("Invalid input file name");
 
         if(inputFileName.equalsIgnoreCase("tinyDG") || inputFileName.equalsIgnoreCase("tinyDAG"))
             isDirected = true;
 
+        if(inputFileName.equalsIgnoreCase("tinyEWG"))
+            isWeighted = true;
+
         inputFileName = inputFileName + ".txt";
-        Graph graph = loadGraphFromFile(inputFileName, isDirected);
-        if(!isDirected)
+
+        if(isWeighted) {
+            getMst(loadEWGFromFile(inputFileName));
+        } else if(!isDirected) {
             unDirectedGraphsRoutines(inputFileName);
-        else
-            runDirectedGraphRoutines((DiGraph)graph);
+        } else {
+            Graph graph = loadGraphFromFile(inputFileName, isDirected);
+            runDirectedGraphRoutines((DiGraph) graph);
+        }
     }
 
     private static void runDirectedGraphRoutines(DiGraph diGraph){
@@ -47,6 +61,17 @@ public class GraphClient {
             return new DiGraph(graphStream);
         else
             return new UndirectedGraph(graphStream);
+    }
+
+    private static EdgeWeightedGraph loadEWGFromFile(String inputFileName) throws Exception {
+        InputStream graphStream = GraphClient.class.getClassLoader().getResourceAsStream(inputFileName);
+        return new UndirectedEWG(graphStream);
+    }
+
+    private static void getMst(EdgeWeightedGraph ewg) throws Exception{
+        PrimMST primMST = new PrimMST(ewg);
+        WeightedEdge[] mst = primMST.getMst();
+        System.out.println("done");
     }
 
     private static void unDirectedGraphsRoutines(String strGraphFileLoc) throws IOException {
