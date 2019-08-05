@@ -25,7 +25,7 @@ public class PrimMST {
         edgeTo = new WeightedEdge[ewg.getNumVertices()];
 
         initializePQ();
-        while(!vertexMinWeightPQ.isEmpty()){
+        while(visitedVertices.size() != this.ewg.getNumVertices()){
             // Remove the root node from min PQ
             Node node = vertexMinWeightPQ.poll();
             visit(node);
