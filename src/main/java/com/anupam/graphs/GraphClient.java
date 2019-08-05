@@ -1,11 +1,13 @@
 package com.anupam.graphs;
 
+import com.anupam.graphs.MST.KruskalMST;
 import com.anupam.graphs.MST.PrimMST;
 import com.anupam.graphs.weighted.EdgeWeightedGraph;
 import com.anupam.graphs.weighted.UndirectedEWG;
 import com.anupam.graphs.weighted.WeightedEdge;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 public class GraphClient {
@@ -70,7 +72,9 @@ public class GraphClient {
 
     private static void getMst(EdgeWeightedGraph ewg) throws Exception{
         PrimMST primMST = new PrimMST(ewg);
+        KruskalMST kruskalMST = new KruskalMST(ewg);
         WeightedEdge[] mst = primMST.getMst();
+        List<WeightedEdge> mstKruskal = kruskalMST.getMst();
         System.out.println("done");
     }
 
