@@ -2,7 +2,7 @@ package com.anupam.ds.unionfind;
 
 import java.util.List;
 
-public class LazyUnionFindBySize extends UnionFind{
+public class LazyUnionFindBySize extends LazyUnionFind{
     private int[] sizeOfVertexComponent;
 
     public LazyUnionFindBySize(int N){
@@ -19,14 +19,6 @@ public class LazyUnionFindBySize extends UnionFind{
         for(int vertex: verticesList){
             sizeOfVertexComponent[vertex] = 1;
         }
-    }
-
-    @Override
-    public int find(int vertex){
-        while(vertex != parent[vertex] ){
-            vertex = parent[vertex];
-        }
-        return vertex;
     }
 
     @Override

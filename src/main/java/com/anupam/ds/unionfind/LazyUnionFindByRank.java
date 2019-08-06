@@ -2,8 +2,8 @@ package com.anupam.ds.unionfind;
 
 import java.util.List;
 
-public class LazyUnionFindByRank extends UnionFind{
-    private int[] vertexRank;
+public class LazyUnionFindByRank extends LazyUnionFind{
+    protected int[] vertexRank;
 
     public LazyUnionFindByRank(int N){
         super(N);
@@ -19,14 +19,6 @@ public class LazyUnionFindByRank extends UnionFind{
         for(int vertex: verticesList){
             vertexRank[vertex] = 0;
         }
-    }
-
-    @Override
-    public int find(int vertex){
-        while(vertex != parent[vertex] ){
-            vertex = parent[vertex];
-        }
-        return vertex;
     }
 
     @Override
