@@ -18,7 +18,7 @@ public class UnionFindClient {
         while( (row = reader.readLine()) != null){
             if (counter == 0 ) {
                 N = Integer.parseInt(row);
-                lazyUnionFindBySize = new LazyUnionFindBySize(N);
+                lazyUnionFindBySize = new LazyUnionFindByRank(N);
             }else {
                 String[] strArray = row.split(" ");
                 int p = Integer.parseInt(strArray[0]);

@@ -2,22 +2,22 @@ package com.anupam.ds.unionfind;
 
 import java.util.List;
 
-public class LazyUnionFindBySize extends UnionFind{
-    private int[] sizeOfVertexComponent;
+public class LazyUnionFindByRank extends UnionFind{
+    private int[] vertexRank;
 
-    public LazyUnionFindBySize(int N){
+    public LazyUnionFindByRank(int N){
         super(N);
-        sizeOfVertexComponent = new int[N];
+        vertexRank = new int[N];
         for(int i = 0; i < N; i++){
-            sizeOfVertexComponent[i] = 1;
+            vertexRank[i] = 0;
         }
     }
 
-    public LazyUnionFindBySize(List<Integer> verticesList){
+    public LazyUnionFindByRank(List<Integer> verticesList){
         super(verticesList);
-        sizeOfVertexComponent = new int[verticesList.size()];
+        vertexRank = new int[verticesList.size()];
         for(int vertex: verticesList){
-            sizeOfVertexComponent[vertex] = 1;
+            vertexRank[vertex] = 0;
         }
     }
 
@@ -37,13 +37,15 @@ public class LazyUnionFindBySize extends UnionFind{
         if(pLeader == qLeader)
             return;
 
-        if(sizeOfVertexComponent[pLeader] < sizeOfVertexComponent[qLeader]){
+        if(vertexRank[pLeader] == vertexRank[qLeader]){
             parent[pLeader] = qLeader;
-            sizeOfVertexComponent[qLeader] += sizeOfVertexComponent[pLeader];
-        }else {
+            vertexRank[qLeader] = vertexRank[pLeader] + 1;
+        }else if(vertexRank[pLeader] < vertexRank[qLeader]){
+            parent[pLeader] = qLeader;
+        }else{
             parent[qLeader] = pLeader;
-            sizeOfVertexComponent[pLeader] += sizeOfVertexComponent[qLeader];
         }
+
         componentCount--;
     }
 }
