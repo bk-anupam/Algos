@@ -1,4 +1,4 @@
-package com.anupam.algorithms;
+package com.anupam.algorithms.sorting;
 
 import java.util.Arrays;
 

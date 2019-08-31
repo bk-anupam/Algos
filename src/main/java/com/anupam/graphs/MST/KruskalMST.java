@@ -1,5 +1,6 @@
 package com.anupam.graphs.MST;
 
+import com.anupam.ds.unionfind.LazyUnionFindByRank;
 import com.anupam.ds.unionfind.LazyUnionFindBySize;
 import com.anupam.ds.unionfind.UnionFind;
 import com.anupam.graphs.weighted.EdgeWeightedGraph;
@@ -39,7 +40,7 @@ public class KruskalMST {
         for(WeightedEdge we: ewg.getAllEdges()){
             weightedEdgePQ.add(we);
         }
-        lazyUnionFindBySize = new LazyUnionFindBySize(ewg.getVertices());
+        lazyUnionFindBySize = new LazyUnionFindByRank(ewg.getVertices());
     }
 
     public List<WeightedEdge> getMst(){

@@ -1,4 +1,4 @@
-package com.anupam.algorithms;
+package com.anupam.algorithms.sorting;
 
 public class SelectionSort {
 	static int iterations=0;

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.anupam.algorithms.sorting.SortingAlgos;
 import com.anupam.graphs.Graph;
 import com.anupam.graphs.UndirectedGraph;
 
@@ -32,6 +33,10 @@ public class Driver {
 		//collectionModify();
 		quickSortTest();		
 		//testGraph();
+		String str = "anupam";
+		String[] strArray = new String[256];
+		char c = str.charAt(0);
+		String v = strArray[c];
 	}
 	
 	private static void testGraph() throws IOException{

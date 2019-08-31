@@ -1,4 +1,4 @@
-package com.anupam.algorithms;
+package com.anupam.algorithms.sorting;
 
 public class InsertionSort {
 	public static void main(String[] args) {
