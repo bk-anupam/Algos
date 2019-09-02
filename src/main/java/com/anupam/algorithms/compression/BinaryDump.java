@@ -27,7 +27,7 @@ public class BinaryDump {
     public static void dumpBinaryToConsole() throws Exception{
         try(BufferedInputStream inputStream = new BufferedInputStream(System.in)){
             System.out.println("Enter some text input: ");
-            System.out.println("The binary representation of input is: ");
+            //System.out.println("The binary representation of input is: ");
             readByteWriteBit(inputStream, System.out, BinaryDump::convertByteToBinaryString);
         }
     }
@@ -49,13 +49,16 @@ public class BinaryDump {
         int counter = 1;
         while((byteRead = inputStream.read()) != -1){
             String byteAsString = conversionFunc.apply((byte)byteRead);
-            outputStream.println(byteAsString);
-            if(counter % (bitsPerLine/8) == 0)
-                outputStream.println("\n");
+            if(counter % (bitsPerLine/8) == 0) {
+                outputStream.print(byteAsString);
+                outputStream.print("\n");
+            }else{
+                outputStream.print(byteAsString + " ");
+            }
             counter++;
             bitCount += 8;
         }
-        outputStream.println(String.format("\nTotal %s bits", bitCount));
+        outputStream.println(String.format("Total %s bits", bitCount));
     }
 
     private static String convertByteToBinaryString(byte inputByte){
