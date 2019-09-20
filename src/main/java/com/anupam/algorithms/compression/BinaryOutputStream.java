@@ -27,8 +27,24 @@ public class BinaryOutputStream implements Closeable {
             clearBuffer();
     }
 
-    public void write(Byte inputByte) throws IOException{
+    public void write(byte inputByte) throws IOException{
         bufferedOutputStream.write(inputByte);
+    }
+
+    public void write(int inputInt) throws IOException{
+        /*for(int i = 1; i < 5; i++){
+            int x = i;
+            int eightbitsfromright = (inputInt >>> (32 - x*8)) & 0xff;
+            write((byte)eightbitsfromright);
+        }*/
+        int firsteightbitsfromright = (inputInt >>> 24) & 0xff;
+        int secondeightbitsfromright = (inputInt >>> 16) & 0xff;
+        int thirdeightbitsfromright = (inputInt >>> 8) & 0xff;
+        int lasteightbitsfromright = (inputInt >>> 8) & 0xff;
+        write((byte)firsteightbitsfromright);
+        write((byte)secondeightbitsfromright);
+        write((byte)thirdeightbitsfromright);
+        write((byte)lasteightbitsfromright);
     }
 
     private void clearBuffer() throws IOException {

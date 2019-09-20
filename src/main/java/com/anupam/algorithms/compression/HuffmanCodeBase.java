@@ -72,20 +72,7 @@ public abstract class HuffmanCodeBase implements Closeable{
     public abstract void readInputWriteCompressedData(InputStream inputStream, Map<Character, String> charCodeMap)
             throws IOException;
 
-    /*public void expand() throws Exception{
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))){
-            int charAsInt;
-            Node currNode = huffmanTrie;
-            while((charAsInt = reader.read()) != -1){
-                if(currNode.isLeaf())
-                    outputStream.print(currNode.charSymbol);
-                else if((char)charAsInt == '0')
-                    currNode = currNode.leftChild;
-                else if((char)charAsInt == '1')
-                    currNode = currNode.rightChild;
-            }
-        }
-    }*/
+    public abstract void expand(PrintStream expandedOutStream) throws IOException;
 
     protected int[] getInputCharFreqCount(InputStream inputStream) throws Exception{
         // index the decimal value of the character symbol in ASCII table, value is the freq. of that character in the input
@@ -101,9 +88,9 @@ public abstract class HuffmanCodeBase implements Closeable{
             logger.info("Marking the beginning input stream");
             inputStream.mark(0);
         }
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        //BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         int charAsInt;
-        while((charAsInt = reader.read()) != -1){
+        while((charAsInt = inputStream.read()) != -1){
             charFrequency[charAsInt] += 1;
         }
         logger.info("Completed calculating the input character frequency count");

@@ -1,6 +1,8 @@
 package com.anupam.algorithms.compression;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -23,6 +25,7 @@ public class HuffmanCodeBinary extends HuffmanCodeBase {
         logger.info("The header string: " + header);
         int headerCharCount = header.toCharArray().length;
         logger.info("Number of characters in header: " + headerCharCount);
+        binaryOutputStream.write(headerCharCount);
         writeHeaderToOutput(header);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         int bitCount = 0;
@@ -43,8 +46,42 @@ public class HuffmanCodeBinary extends HuffmanCodeBase {
         logger.info("Compressed file bit count: " + bitCount);
     }
 
+    public void expand(PrintStream outputStream) throws IOException {
+        // Get the number of characters in the header by reading first 4 bytes integer
+        logger.info("Starting the decompression");
+        byte[] intByteArray = new byte[4];
+        inputStream.read(intByteArray);
+        int headerNoChars = ByteBuffer.wrap(intByteArray).getInt();
+        logger.info("No of characters in the header: " + headerNoChars);
+        char[] headerCharArray = new char[headerNoChars];
+        for(int i = 0; i < headerNoChars; i++){
+            headerCharArray[i] = (char)inputStream.read();
+        }
+        String headerString = String.valueOf(headerCharArray);
+        logger.info("The header string is: " + headerString);
+        Node root = buildHuffmanTrieFromHeader(headerString);
+        Map<Character, String> charCodeMap = buildCodeTable(root, new HashMap<>(), "");
+        logger.info("The code table for decompression: ");
+        charCodeMap.forEach((k,v) -> logger.info(String.format("%s->%s", k, v)));
+        int inputByte;
+        Node currNode = root;
+        while((inputByte = inputStream.read()) != -1){
+            for(int i = 7; i >= 0; --i){
+                int inputBit = (inputByte >>> i) & 0xff;
+                if(inputBit == 0)
+                    currNode = currNode.leftChild;
+                else if(inputBit == 1)
+                    currNode = currNode.rightChild;
+
+                if(currNode.isLeaf() && currNode.charSymbol != '\0')
+                    outputStream.print(currNode.charSymbol);
+            }
+        }
+        logger.info("Uncompression completed");
+    }
+
+
     private void writeHeaderToOutput(String header) throws IOException{
-        header = header + "0";
         for(byte inputByte: header.getBytes()){
             binaryOutputStream.write(inputByte);
         }
