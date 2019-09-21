@@ -40,7 +40,7 @@ public class BinaryOutputStream implements Closeable {
         int firsteightbitsfromright = (inputInt >>> 24) & 0xff;
         int secondeightbitsfromright = (inputInt >>> 16) & 0xff;
         int thirdeightbitsfromright = (inputInt >>> 8) & 0xff;
-        int lasteightbitsfromright = (inputInt >>> 8) & 0xff;
+        int lasteightbitsfromright = inputInt & 0xff;
         write((byte)firsteightbitsfromright);
         write((byte)secondeightbitsfromright);
         write((byte)thirdeightbitsfromright);

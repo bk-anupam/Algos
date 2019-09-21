@@ -27,13 +27,11 @@ public class HuffmanCodeBinary extends HuffmanCodeBase {
         logger.info("Number of characters in header: " + headerCharCount);
         binaryOutputStream.write(headerCharCount);
         writeHeaderToOutput(header);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         int bitCount = 0;
-        int charAsInt;
         long inputCharCount = 0;
-        while((charAsInt = reader.read()) != -1){
+        for(byte inputByte: byteArrayInputStream){
             inputCharCount++;
-            String charCode = charCodeMap.get((char)charAsInt);
+            String charCode = charCodeMap.get((char)inputByte);
             for(char inputChar: charCode.toCharArray()){
                 if(inputChar == '0')
                     binaryOutputStream.write(false);
@@ -67,14 +65,16 @@ public class HuffmanCodeBinary extends HuffmanCodeBase {
         Node currNode = root;
         while((inputByte = inputStream.read()) != -1){
             for(int i = 7; i >= 0; --i){
-                int inputBit = (inputByte >>> i) & 0xff;
+                int inputBit = (inputByte >>> i & 1);
                 if(inputBit == 0)
                     currNode = currNode.leftChild;
                 else if(inputBit == 1)
                     currNode = currNode.rightChild;
 
-                if(currNode.isLeaf() && currNode.charSymbol != '\0')
+                if(currNode.isLeaf()) {
                     outputStream.print(currNode.charSymbol);
+                    currNode = root;
+                }
             }
         }
         logger.info("Uncompression completed");
@@ -99,7 +99,7 @@ public class HuffmanCodeBinary extends HuffmanCodeBase {
                     Node lastNode = nodeStack.pop();
                     Node secondLastNode = nodeStack.pop();
                     // Create a new internal node and push on stack
-                    nodeStack.push(new Node('\0', 1, lastNode, secondLastNode));
+                    nodeStack.push(new Node('\0', 1, secondLastNode, lastNode));
                 }
             }
         }

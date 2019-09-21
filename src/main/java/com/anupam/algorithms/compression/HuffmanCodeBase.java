@@ -1,5 +1,6 @@
 package com.anupam.algorithms.compression;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -12,13 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class HuffmanCodeBase implements Closeable{
     // We consider characters in the normal ASCII table
     protected InputStream inputStream;
+    protected byte[] byteArrayInputStream;
     protected Node huffmanTrie;
     // Number of characters in the standard ASCII table. This is what our input data is assumed to possibly contain
     int R = 128;
     static final Logger logger = Logger.getLogger(HuffmanCodeBase.class);
 
     public HuffmanCodeBase(InputStream in){
-        this.inputStream = in;
+        this.inputStream = new BufferedInputStream(in);
     }
 
     protected Node buildTrie(int[] charFrequency){
@@ -59,7 +61,8 @@ public abstract class HuffmanCodeBase implements Closeable{
     }
 
     public void compress() throws Exception{
-        int[] inputCharFreqCount = getInputCharFreqCount(inputStream);
+        byteArrayInputStream = IOUtils.toByteArray(inputStream);
+        int[] inputCharFreqCount = getInputCharFreqCount(byteArrayInputStream);
         huffmanTrie = buildTrie(inputCharFreqCount);
         // Build code table which maps each of the distinct input characters to its corresponding binary code by traversing the huffman trie
         Map<Character, String> charCodeMap = buildCodeTable(huffmanTrie, new HashMap<>(), "");
@@ -74,30 +77,13 @@ public abstract class HuffmanCodeBase implements Closeable{
 
     public abstract void expand(PrintStream expandedOutStream) throws IOException;
 
-    protected int[] getInputCharFreqCount(InputStream inputStream) throws Exception{
+    protected int[] getInputCharFreqCount(byte[] byteArrayInputStream) throws Exception{
         // index the decimal value of the character symbol in ASCII table, value is the freq. of that character in the input
         int[] charFrequency = new int[R];
-        /*try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))){
-            String inputLine;
-            while((inputLine = reader.readLine()) != null){
-                inputLine.codePoints()
-                         .forEach(charIntValue -> charFrequency[charIntValue] += 1);
-            }
-        }*/
-        if(inputStream.markSupported()){
-            logger.info("Marking the beginning input stream");
-            inputStream.mark(0);
-        }
-        //BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        int charAsInt;
-        while((charAsInt = inputStream.read()) != -1){
-            charFrequency[charAsInt] += 1;
+        for(byte inputByte: byteArrayInputStream){
+            charFrequency[inputByte] += 1;
         }
         logger.info("Completed calculating the input character frequency count");
-        if(inputStream.markSupported()){
-            inputStream.reset();
-            logger.info("Reset the input stream to beginning");
-        }
         return charFrequency;
     }
 
